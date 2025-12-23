@@ -1,0 +1,24 @@
+---
+- name: Обновить кэш apt
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Установить nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+
+- name: Положить кастомную страницу
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    mode: "0644"
+  notify: Restart nginx
+
+- name: Убедиться, что nginx запущен и включен
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+

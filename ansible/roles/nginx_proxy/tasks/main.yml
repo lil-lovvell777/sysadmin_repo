@@ -1,0 +1,40 @@
+---
+- name: Обновить кэш apt
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Установить nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+
+- name: Установить конфиг reverse proxy на порт 3000
+  ansible.builtin.template:
+    src: proxy.conf.j2
+    dest: /etc/nginx/sites-available/proxy.conf
+    mode: "0644"
+  notify: Reload nginx
+
+- name: Включить сайт
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/proxy.conf
+    dest: /etc/nginx/sites-enabled/proxy.conf
+    state: link
+  notify: Reload nginx
+
+- name: Отключить дефолтный сайт (чтобы не мешал)
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Reload nginx
+
+- name: Проверить конфиг nginx
+  ansible.builtin.command: nginx -t
+  changed_when: false
+
+- name: Убедиться, что nginx запущен и включен
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes

@@ -1,0 +1,19 @@
+---
+- name: Базовая настройка всех ВМ
+  hosts: all
+  roles:
+    - role: vm_base
+      tags: vm_base
+
+- name: Настройка отдающих веб-серверов
+  hosts: web
+  roles:
+    - role: nginx_backend
+      tags: nginx_backend
+
+- name: Настройка проксирующего сервера
+  hosts: proxy
+  roles:
+    - role: nginx_proxy
+      tags: nginx_proxy
+
