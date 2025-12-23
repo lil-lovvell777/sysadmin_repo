@@ -1,0 +1,40 @@
+sa_key_file = "YOUR_PATH_TO_KEY.JSON"
+
+cloud_id  = "YOUR_CLOUD_ID" # из Yandex Cloud (Cloud)
+folder_id = "TOUR_FOLDER_ID" # из Yandex Cloud (Folder)
+zone      = "YOUR_ZONE"
+
+subnet_id = "YOUR_SUBNET_ID"
+
+vm_user             = "YOUR_USER"
+ssh_public_key_path = "YOUR_PATH"
+
+virtual_machines = {
+  "proxy" = {
+    vm_name   = "vm-proxy"
+    vm_desc   = "Proxy nginx: listen 3000 -> backend:80"
+    vm_cpu    = 2
+    ram       = 2
+    disk      = 20
+    disk_name = "proxy-disk"
+    template  = "YOUR_IMAGE_ID" # Ubuntu 24
+  },
+  "backend-1" = {
+    vm_name   = "vm-web-1"
+    vm_desc   = "Backend nginx #1"
+    vm_cpu    = 2
+    ram       = 2
+    disk      = 20
+    disk_name = "web1-disk"
+    template  = "YOUR_IMAGE_ID"
+  },
+  "backend-2" = {
+    vm_name   = "vm-web-2"
+    vm_desc   = "Backend nginx #2"
+    vm_cpu    = 2
+    ram       = 2
+    disk      = 20
+    disk_name = "web2-disk"
+    template  = "YOUR_IMAGE_ID"
+  }
+}
